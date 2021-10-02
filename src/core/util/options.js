@@ -305,6 +305,7 @@ function normalizeProps (options: Object, vm: ?Component) {
     while (i--) {
       val = props[i]
       if (typeof val === 'string') {
+        // -连接转成小写字母
         name = camelize(val)
         res[name] = { type: null }
       } else if (process.env.NODE_ENV !== 'production') {
@@ -340,6 +341,7 @@ function normalizeInject (options: Object, vm: ?Component) {
     for (let i = 0; i < inject.length; i++) {
       normalized[inject[i]] = { from: inject[i] }
     }
+    // 类型为对象
   } else if (isPlainObject(inject)) {
     for (const key in inject) {
       const val = inject[key]
@@ -391,13 +393,14 @@ export function mergeOptions (
   vm?: Component
 ): Object {
   if (process.env.NODE_ENV !== 'production') {
+    // 组件合法性检测
     checkComponents(child)
   }
 
   if (typeof child === 'function') {
     child = child.options
   }
-
+  // 注入props和directives
   normalizeProps(child, vm)
   normalizeInject(child, vm)
   normalizeDirectives(child)

@@ -3,6 +3,7 @@
 import { ASSET_TYPES } from 'shared/constants'
 import { isPlainObject, validateComponentName } from '../util/index'
 
+// 注册component directive filter 等
 export function initAssetRegisters (Vue: GlobalAPI) {
   /**
    * Create asset registration methods.

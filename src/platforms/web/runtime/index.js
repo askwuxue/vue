@@ -31,6 +31,7 @@ extend(Vue.options.directives, platformDirectives)
 extend(Vue.options.components, platformComponents)
 
 // install platform patch function
+// noop 空函数
 Vue.prototype.__patch__ = inBrowser ? patch : noop
 
 // public mount method
@@ -39,6 +40,7 @@ Vue.prototype.$mount = function (
   hydrating?: boolean
 ): Component {
   el = el && inBrowser ? query(el) : undefined
+  // 挂载组件
   return mountComponent(this, el, hydrating)
 }
 
