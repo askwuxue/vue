@@ -35,6 +35,7 @@ Vue.prototype.$mount = function (
   // this指向Vue实例
   const options = this.$options
   // resolve template/el and convert to render function
+  // 不存在render函数
   if (!options.render) {
     let template = options.template
     if (template) {
@@ -50,7 +51,7 @@ Vue.prototype.$mount = function (
             )
           }
         }
-        // 不同类型的节点
+        // 节点类型
       } else if (template.nodeType) {
         template = template.innerHTML
       } else {
