@@ -32,12 +32,12 @@ Vue.prototype.$mount = function (
     return this
   }
 
-  // this指向Vue实例
   const options = this.$options
   // resolve template/el and convert to render function
   // 不存在render函数
   if (!options.render) {
     let template = options.template
+    // 存在template属性
     if (template) {
       if (typeof template === 'string') {
         if (template.charAt(0) === '#') {
@@ -60,6 +60,7 @@ Vue.prototype.$mount = function (
         }
         return this
       }
+    // 存在el属性
     } else if (el) {
       template = getOuterHTML(el)
     }
@@ -69,7 +70,7 @@ Vue.prototype.$mount = function (
         mark('compile')
       }
 
-      // 创建render函数
+      // 根据template或者el创建render函数
       const { render, staticRenderFns } = compileToFunctions(template, {
         outputSourceRange: process.env.NODE_ENV !== 'production',
         shouldDecodeNewlines,

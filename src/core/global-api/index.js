@@ -42,7 +42,7 @@ export function initGlobalAPI (Vue: GlobalAPI) {
     defineReactive
   }
 
-  // Vue实例的静态属性
+  // Vue实例的静态方法注册
   Vue.set = set
   Vue.delete = del
   Vue.nextTick = nextTick

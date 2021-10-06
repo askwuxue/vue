@@ -34,8 +34,12 @@ export function initMixin (Vue: Class<Component>) {
       // optimize internal component instantiation
       // since dynamic options merging is pretty slow, and none of the
       // internal component options needs special treatment.
+      // 子组件：性能优化，减少原型链的动态查找，提高执行效率
       initInternalComponent(vm, options)
     } else {
+      // 根组件：选项合并，将全局配置合并到根组件的局部实例上
+      // 1. Vue.component做了选项合并，合并Vue内置的全局组件和用户自己注册的全局组件，最终都会放到components选项上
+      // 2. components局部注册，执行编译器生成的render函数时进行选合并，合并全局配置项到组件局部配置项上
       vm.$options = mergeOptions(
         resolveConstructorOptions(vm.constructor),
         options || {},
@@ -50,14 +54,23 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
-    // 初始化生命周期函数
+    // 组件关系属性的初始化
     initLifecycle(vm)
+    // 初始化自定事件
+    // 谁触发谁监听
+    // 触发 this.$emit('click') 监听 this.$on('click', function handler() {})
     initEvents(vm)
+    // 初始化插槽，获取this.$slots 定义this._c 即createElement方法，平时使用的h函数
     initRender(vm)
+    // 执行beforeCreate生命周期函数
     callHook(vm, 'beforeCreate')
+    // 初始化inject选项 并做响应式处理
     initInjections(vm) // resolve injections before data/props
+    // 响应式处理的核心
     initState(vm)
+    // 处理provide选项
     initProvide(vm) // resolve provide after data/props
+    // 调用created生命周期函数
     callHook(vm, 'created')
 
     /* istanbul ignore if */
@@ -73,6 +86,7 @@ export function initMixin (Vue: Class<Component>) {
   }
 }
 
+// 性能优化 打平配置对象上的属性，减少运行时原型链的查找，提高执行效率
 export function initInternalComponent (vm: Component, options: InternalComponentOptions) {
   const opts = vm.$options = Object.create(vm.constructor.options)
   // doing this because it's faster than dynamic enumeration.
@@ -92,21 +106,28 @@ export function initInternalComponent (vm: Component, options: InternalComponent
   }
 }
 
+// 从构造函数上解析对象
 export function resolveConstructorOptions (Ctor: Class<Component>) {
   let options = Ctor.options
+  // Ctor是由Vue.extend创建的继承自Vue类的子类
   if (Ctor.super) {
     const superOptions = resolveConstructorOptions(Ctor.super)
+    // 缓存
     const cachedSuperOptions = Ctor.superOptions
+    // 基类配置项发生了变化
     if (superOptions !== cachedSuperOptions) {
       // super option changed,
       // need to resolve new options.
       Ctor.superOptions = superOptions
       // check if there are any late-modified/attached options (#4976)
+      // 发生变化的配置项
       const modifiedOptions = resolveModifiedOptions(Ctor)
       // update base extend options
+      // 更改的选项和extend合并
       if (modifiedOptions) {
         extend(Ctor.extendOptions, modifiedOptions)
       }
+      // 新选项赋值给options
       options = Ctor.options = mergeOptions(superOptions, Ctor.extendOptions)
       if (options.name) {
         options.components[options.name] = Ctor

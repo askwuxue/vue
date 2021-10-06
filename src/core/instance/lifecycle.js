@@ -29,6 +29,7 @@ export function setActiveInstance(vm: Component) {
   }
 }
 
+// 组件关系属性的初始化
 export function initLifecycle (vm: Component) {
   const options = vm.$options
 
