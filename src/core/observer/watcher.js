@@ -51,6 +51,7 @@ export default class Watcher {
     isRenderWatcher?: boolean
   ) {
     this.vm = vm
+    // 渲染的watcher，Vue实例上挂载_watcher
     if (isRenderWatcher) {
       vm._watcher = this
     }
@@ -77,6 +78,7 @@ export default class Watcher {
       ? expOrFn.toString()
       : ''
     // parse expression for getter
+    // updateComponent是函数，watcher.getter = updateComponent
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
@@ -91,6 +93,7 @@ export default class Watcher {
         )
       }
     }
+    // 没有定义lazy立即执行get
     this.value = this.lazy
       ? undefined
       : this.get()
@@ -100,10 +103,12 @@ export default class Watcher {
    * Evaluate the getter, and re-collect dependencies.
    */
   get () {
+    // 入栈存放watcher的栈
     pushTarget(this)
     let value
     const vm = this.vm
     try {
+      // 调用getter，调用了传递进来的updateComponent
       value = this.getter.call(vm, vm)
     } catch (e) {
       if (this.user) {

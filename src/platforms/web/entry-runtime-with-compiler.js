@@ -16,7 +16,7 @@ const idToTemplate = cached(id => {
 })
 
 const mount = Vue.prototype.$mount
-// $mount方法重写
+// $mount方法重写，全局一共存在两个$mount方法，一个是带编译器的版本使用，一个不带编译器的版本使用
 Vue.prototype.$mount = function (
   el?: string | Element,
   hydrating?: boolean
@@ -32,9 +32,10 @@ Vue.prototype.$mount = function (
     return this
   }
 
+  // 获取Vue实例的$options
   const options = this.$options
   // resolve template/el and convert to render function
-  // 不存在render函数
+  // 不存在render函数，会根据template选项和el选项进行编译
   if (!options.render) {
     let template = options.template
     // 存在template属性
@@ -108,6 +109,7 @@ function getOuterHTML (el: Element): string {
   }
 }
 
+// 在Vue实例上挂载compile函数
 Vue.compile = compileToFunctions
 
 export default Vue

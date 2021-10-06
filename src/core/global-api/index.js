@@ -48,13 +48,14 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   Vue.nextTick = nextTick
 
   // 2.6 explicit observable API
-  // 对象响应式处理
+  // 对象响应式处理方法注册
   Vue.observable = <T>(obj: T): T => {
     observe(obj)
     return obj
   }
 
   Vue.options = Object.create(null)
+  // 在Vue的options选项中添加components，directives，filters等选项对象
   ASSET_TYPES.forEach(type => {
     Vue.options[type + 's'] = Object.create(null)
   })
@@ -67,8 +68,11 @@ export function initGlobalAPI (Vue: GlobalAPI) {
   extend(Vue.options.components, builtInComponents)
 
   // 初始化静态方法
+  // Vue.use
   initUse(Vue)
+  // Vue.mixin
   initMixin(Vue)
+  // Vue.extend
   initExtend(Vue)
   initAssetRegisters(Vue)
 }

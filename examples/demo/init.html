@@ -10,6 +10,14 @@
   <div id="app"></div>
   <script src="../../dist/vue.js"></script>
   <script>
+    Vue.use(function cb () {}, function cb2 () {}, function cb3 () {})
+    const vueRouter = class {
+      constructor() {}
+      static install () {
+
+      }
+    }
+    // Vue.use(vueRouter)
     const vm = new Vue({
       el: '#app',
       template: '<h1>Hello</h1>',

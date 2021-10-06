@@ -55,6 +55,7 @@ export default class Dep {
 Dep.target = null
 const targetStack = []
 
+// 存放watcher的栈
 export function pushTarget (target: ?Watcher) {
   targetStack.push(target)
   Dep.target = target

@@ -167,6 +167,8 @@ export function mountComponent (
       }
     }
   }
+
+  // 挂载之前
   callHook(vm, 'beforeMount')
 
   let updateComponent
@@ -189,7 +191,9 @@ export function mountComponent (
       measure(`vue ${name} patch`, startTag, endTag)
     }
   } else {
+    // 组件更新定义
     updateComponent = () => {
+      // 最终通过调用render函数，实现组件更新
       vm._update(vm._render(), hydrating)
     }
   }
@@ -197,6 +201,7 @@ export function mountComponent (
   // we set this to vm._watcher inside the watcher's constructor
   // since the watcher's initial patch may call $forceUpdate (e.g. inside child
   // component's mounted hook), which relies on vm._watcher being already defined
+  // 每一个组件对应一个Watcher，new Watcher时进行更新组件
   new Watcher(vm, updateComponent, noop, {
     before () {
       if (vm._isMounted && !vm._isDestroyed) {
