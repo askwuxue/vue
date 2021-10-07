@@ -5,26 +5,55 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <script src="../../dist/vue.js"></script>
+  <script type="text/x-template" id="hello-world-template">
+    <p>Hello hello hello</p>
+  </script>
+  <script type="text/x-template" id="hello-world-template-demo">
+    <p>Hello demo</p>
+  </script>
 </head>
 <body>
-  <div id="app"></div>
-  <script src="../../dist/vue.js"></script>
-  <script>
-    Vue.use(function cb () {}, function cb2 () {}, function cb3 () {})
-    const vueRouter = class {
-      constructor() {}
-      static install () {
+  <div id="app">
+    <!-- <div>11</div> -->
+    <hello-world>
+      <hello-world-demo></hello-world-demo>
+    </hello-world>
+  </div>
 
+  <script>
+    // Vue.use(function cb () {}, function cb2 () {}, function cb3 () {})
+    // const vueRouter = class {
+    //   constructor() {}
+    //   static install () {
+    //   }
+    // }
+
+    Vue.component('hello-world', {
+      template: '<div><slot></slot></div>',
+      created () {
+        console.log(this.$parent)
       }
-    }
+    })
+
+    Vue.component('hello-world-demo', {
+      template: '#hello-world-template-demo',
+      created () {
+        console.log(this.$parent)
+      }
+    })
+
     // Vue.use(vueRouter)
     const vm = new Vue({
       el: '#app',
-      template: '<h1>Hello</h1>',
-      render (h) {
-        return h('h2', 'Hello Vue')
+      // template: '<h1>Hello</h1>',
+      // render (h) {
+      //   return h('h2', 'Hello Vue')
+      // },
+      created () {
+        console.log(this.$parent)
       }
-    })
+    });
   </script>
 </body>
 </html>

@@ -15,11 +15,15 @@ function Vue (options) {
   // 初始化
   this._init(options)
 }
-
+// initLifecycle, initEvents, initRender, initInjections, initState, initProvide
 initMixin(Vue)
+// $set，$delete，$watch
 stateMixin(Vue)
+// $on， $once，$off, $emit
 eventsMixin(Vue)
+// _update, $forceUpdate, $destroy
 lifecycleMixin(Vue)
+// $nextTick, _render
 renderMixin(Vue)
 
 export default Vue

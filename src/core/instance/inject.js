@@ -37,6 +37,7 @@ export function initInjections (vm: Component) {
   }
 }
 
+// 取provide，注入
 export function resolveInject (inject: any, vm: Component): ?Object {
   if (inject) {
     // inject is :any because flow is not smart enough to figure out cached

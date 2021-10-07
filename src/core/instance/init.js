@@ -54,7 +54,7 @@ export function initMixin (Vue: Class<Component>) {
     }
     // expose real self
     vm._self = vm
-    // 组件关系属性的初始化
+    // 组件关系属性的初始化 $parent, $root, $children, $refs, _watcher, _directInactive
     initLifecycle(vm)
     // 初始化自定事件
     // 谁触发谁监听
@@ -66,7 +66,7 @@ export function initMixin (Vue: Class<Component>) {
     callHook(vm, 'beforeCreate')
     // 初始化inject选项 并做响应式处理
     initInjections(vm) // resolve injections before data/props
-    // 响应式处理的核心
+    // 响应式处理的核心，对data，props，method进行处理
     initState(vm)
     // 处理provide选项
     initProvide(vm) // resolve provide after data/props

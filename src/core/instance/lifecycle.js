@@ -352,6 +352,7 @@ export function callHook (vm: Component, hook: string) {
       invokeWithErrorHandling(handlers[i], vm, null, vm, info)
     }
   }
+  // 触发生命周期函数
   if (vm._hasHookEvent) {
     vm.$emit('hook:' + hook)
   }
