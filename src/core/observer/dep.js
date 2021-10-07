@@ -20,6 +20,7 @@ export default class Dep {
     this.subs = []
   }
 
+  // 添加观察者
   addSub (sub: Watcher) {
     this.subs.push(sub)
   }
@@ -28,12 +29,14 @@ export default class Dep {
     remove(this.subs, sub)
   }
 
+  // 添加观察者
   depend () {
     if (Dep.target) {
       Dep.target.addDep(this)
     }
   }
 
+  // 通知所有观察者发生变化
   notify () {
     // stabilize the subscriber list first
     const subs = this.subs.slice()
@@ -55,7 +58,7 @@ export default class Dep {
 Dep.target = null
 const targetStack = []
 
-// 存放watcher的栈
+// 存放watcher的栈,每个组件对应一个watcher，当前watcher还没有结束，先存储
 export function pushTarget (target: ?Watcher) {
   targetStack.push(target)
   Dep.target = target

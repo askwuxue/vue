@@ -15,10 +15,15 @@
 </head>
 <body>
   <div id="app">
+    <h1>
+      {{msg}}
+    </h1>
+    <hr>
+    {{msg}}
     <!-- <div>11</div> -->
-    <hello-world>
+    <!-- <hello-world>
       <hello-world-demo></hello-world-demo>
-    </hello-world>
+    </hello-world> -->
   </div>
 
   <script>
@@ -29,30 +34,33 @@
     //   }
     // }
 
-    Vue.component('hello-world', {
-      template: '<div><slot></slot></div>',
-      created () {
-        console.log(this.$parent)
-      }
-    })
+    // Vue.component('hello-world', {
+    //   template: '<div><slot></slot></div>',
+    //   created () {
+    //     console.log(this.$parent)
+    //   }
+    // })
 
-    Vue.component('hello-world-demo', {
-      template: '#hello-world-template-demo',
-      created () {
-        console.log(this.$parent)
-      }
-    })
+    // Vue.component('hello-world-demo', {
+    //   template: '#hello-world-template-demo',
+    //   created () {
+    //     console.log(this.$parent)
+    //   }
+    // })
 
     // Vue.use(vueRouter)
     const vm = new Vue({
       el: '#app',
+      data: {
+        msg: 'hello world'
+      }
       // template: '<h1>Hello</h1>',
       // render (h) {
       //   return h('h2', 'Hello Vue')
       // },
-      created () {
-        console.log(this.$parent)
-      }
+      // created () {
+      //   console.log(this.$parent)
+      // }
     });
   </script>
 </body>
