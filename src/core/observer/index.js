@@ -46,8 +46,11 @@ export class Observer {
     this.dep = new Dep()
     this.vmCount = 0
     def(value, '__ob__', this)
+    // value值为对象
     if (Array.isArray(value)) {
+      // 浏览器是否部署了__proto__属性
       if (hasProto) {
+        // 为value设置__proto__属性值为arrayMethods
         protoAugment(value, arrayMethods)
       } else {
         copyAugment(value, arrayMethods, arrayKeys)
@@ -73,6 +76,7 @@ export class Observer {
   /**
    * Observe a list of Array items.
    */
+  // 为数组元素设置响应式
   observeArray (items: Array<any>) {
     for (let i = 0, l = items.length; i < l; i++) {
       observe(items[i])
@@ -181,7 +185,7 @@ export function defineReactive (
         if (childOb) {
           // 子对象收集依赖
           childOb.dep.depend()
-          // 对象属性值是数组
+          // 属性值为数组
           if (Array.isArray(value)) {
             dependArray(value)
           }

@@ -16,10 +16,11 @@
 <body>
   <div id="app">
     <h1>
-      {{msg}}
+      <!-- {{msg}} -->
+      {{arr}}
     </h1>
     <hr>
-    {{msg}}
+    <!-- {{msg}} -->
     <!-- <div>11</div> -->
     <!-- <hello-world>
       <hello-world-demo></hello-world-demo>
@@ -52,7 +53,8 @@
     const vm = new Vue({
       el: '#app',
       data: {
-        msg: 'hello world'
+        msg: 'hello world',
+        arr: [1, 5, 10]
       }
       // template: '<h1>Hello</h1>',
       // render (h) {
