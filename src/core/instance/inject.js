@@ -13,6 +13,7 @@ export function initProvide (vm: Component) {
   }
 }
 
+// 初始化inject选项，并做响应式处理
 export function initInjections (vm: Component) {
   // 从配置项上解析inject选项，得到result[key] = val的形式
   const result = resolveInject(vm.$options.inject, vm)

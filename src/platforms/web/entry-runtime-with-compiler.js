@@ -109,7 +109,7 @@ function getOuterHTML (el: Element): string {
   }
 }
 
-// 在Vue实例上挂载compile函数
+// 在Vue上挂载静态方法compile
 Vue.compile = compileToFunctions
 
 export default Vue

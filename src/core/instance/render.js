@@ -47,7 +47,7 @@ export function initRender (vm: Component) {
       !isUpdatingChildComponent && warn(`$listeners is readonly.`, vm)
     }, true)
   } else {
-    // 定义$attrs和$listeners对象上的响应式属性
+    // 定义vm对象上$attrs和$listeners为响应式属性
     defineReactive(vm, '$attrs', parentData && parentData.attrs || emptyObject, null, true)
     defineReactive(vm, '$listeners', options._parentListeners || emptyObject, null, true)
   }

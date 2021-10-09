@@ -43,8 +43,10 @@ export class Observer {
 
   constructor (value: any) {
     this.value = value
+    // 创建发布者dep
     this.dep = new Dep()
     this.vmCount = 0
+    // 要为对象value配置__ob__属性，属性值为Observer对象实例
     def(value, '__ob__', this)
     // value值为对象
     if (Array.isArray(value)) {
@@ -66,6 +68,7 @@ export class Observer {
    * getter/setters. This method should only be called when
    * value type is Object.
    */
+  // 为对象上所有属性设置getter/setter
   walk (obj: Object) {
     const keys = Object.keys(obj)
     for (let i = 0; i < keys.length; i++) {
@@ -151,6 +154,7 @@ export function defineReactive (
   customSetter?: ?Function,
   shallow?: boolean
 ) {
+  // 创建发布者
   const dep = new Dep()
 
   // 对象的属性值是否可以配置
@@ -163,7 +167,7 @@ export function defineReactive (
   // 用户可能自定义了get和set
   const getter = property && property.get
   const setter = property && property.set
-  // 该条件没看懂
+  // 没有第三个参数，就使用obj[key]获取val
   if ((!getter || setter) && arguments.length === 2) {
     val = obj[key]
   }
@@ -174,6 +178,7 @@ export function defineReactive (
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
+    // 定义get
     get: function reactiveGetter () {
       // 用户定义的getter
       const value = getter ? getter.call(obj) : val

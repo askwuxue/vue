@@ -69,6 +69,7 @@ export default class Watcher {
     this.cb = cb
     this.id = ++uid // uid for batching
     this.active = true
+    // watcher的lazy属性值设置给dirty
     this.dirty = this.lazy // for lazy watchers
     this.deps = []
     this.newDeps = []
@@ -108,7 +109,6 @@ export default class Watcher {
     let value
     const vm = this.vm
     try {
-      // 调用getter，调用了传递进来的updateComponent
       value = this.getter.call(vm, vm)
     } catch (e) {
       if (this.user) {
@@ -200,6 +200,7 @@ export default class Watcher {
           const info = `callback for watcher "${this.expression}"`
           invokeWithErrorHandling(this.cb, this.vm, [value, oldValue], this.vm, info)
         } else {
+          // 调用Watcher对象接收的回调函数
           this.cb.call(this.vm, value, oldValue)
         }
       }

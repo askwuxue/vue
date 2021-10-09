@@ -46,6 +46,7 @@ export function proxy (target: Object, sourceKey: string, key: string) {
   Object.defineProperty(target, key, sharedPropertyDefinition)
 }
 
+// 响应式处理核心
 export function initState (vm: Component) {
   vm._watchers = []
   const opts = vm.$options
@@ -71,6 +72,7 @@ function initProps (vm: Component, propsOptions: Object) {
   const isRoot = !vm.$parent
   // root instance props should be converted
   if (!isRoot) {
+    // 设置shouldObserve
     toggleObserving(false)
   }
   for (const key in propsOptions) {
@@ -144,6 +146,8 @@ function initData (vm: Component) {
         `Use prop default value instead.`,
         vm
       )
+
+      // 将不以$开头和_开头的属性key代理到vm的_data上
     } else if (!isReserved(key)) {
       proxy(vm, `_data`, key)
     }
@@ -152,8 +156,10 @@ function initData (vm: Component) {
   observe(data, true /* asRootData */)
 }
 
+// 获取组件中的data数据，组件中的data是函数，该函数的返回值为组件的data数据
 export function getData (data: Function, vm: Component): any {
   // #7573 disable dep collection when invoking data getters
+  // TODO 为什么禁用依赖收集，多此一举呢
   pushTarget()
   try {
     return data.call(vm, vm)

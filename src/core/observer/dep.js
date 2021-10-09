@@ -15,6 +15,7 @@ export default class Dep {
   id: number;
   subs: Array<Watcher>;
 
+  // 为每一个dep创建id
   constructor () {
     this.id = uid++
     this.subs = []
@@ -29,8 +30,8 @@ export default class Dep {
     remove(this.subs, sub)
   }
 
-  // 添加观察者
   depend () {
+    // 如果Dep.target存在，即watcher存在，调用watcher的addDep方法，最终为还是调用dep的addDep方法
     if (Dep.target) {
       Dep.target.addDep(this)
     }
@@ -46,6 +47,7 @@ export default class Dep {
       // order
       subs.sort((a, b) => a.id - b.id)
     }
+    // 调用观察者watcher的update对象
     for (let i = 0, l = subs.length; i < l; i++) {
       subs[i].update()
     }
