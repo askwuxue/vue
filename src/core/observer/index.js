@@ -230,6 +230,7 @@ export function defineReactive (
  * already exist.
  */
 export function set (target: Array<any> | Object, key: any, val: any): any {
+  // 不能为undefined或者null以及原始数据设值
   if (process.env.NODE_ENV !== 'production' &&
     (isUndef(target) || isPrimitive(target))
   ) {
@@ -237,6 +238,7 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
   }
   if (Array.isArray(target) && isValidArrayIndex(key)) {
     target.length = Math.max(target.length, key)
+    // 调用的是重写之后的数据方法，会通知发布者通知订阅者更新
     target.splice(key, 1, val)
     return val
   }
@@ -252,11 +254,13 @@ export function set (target: Array<any> | Object, key: any, val: any): any {
     )
     return val
   }
+  // 如果原本的target不是响应式的，set设置的值也不需要是响应式的
   if (!ob) {
     target[key] = val
     return val
   }
   defineReactive(ob.value, key, val)
+  // 通知更新
   ob.dep.notify()
   return val
 }
