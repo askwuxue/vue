@@ -35,7 +35,7 @@ export function toggleObserving (value: boolean) {
  * collect dependencies and dispatch updates.
  */
 
-// 为每个被观察对象添加观察者，将对象的属性转成getter和setter，并且收集依赖派发更新
+// Observer类的作用是通过递归将一个对象上的属性转化成可以监听的对象
 export class Observer {
   value: any;
   dep: Dep;
@@ -46,7 +46,8 @@ export class Observer {
     // 创建发布者dep
     this.dep = new Dep()
     this.vmCount = 0
-    // 要为对象value配置__ob__属性，属性值为Observer对象实例
+    // 要为对象value配置__ob__属性，属性值为Observer对象实例。
+    // 设置了__ob__属性的对象已经进行了响应式的处理，__ob__起到标识作用
     def(value, '__ob__', this)
     // value值为对象
     if (Array.isArray(value)) {
