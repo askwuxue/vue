@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="../../dist/vue.js"></script>
+  <!-- <script type="text/x-template" id="hello-world-template">
+    <p>Hello hello hello</p>
+  </script>
+  <script type="text/x-template" id="hello-world-template-demo">
+    <p>Hello demo</p>
+  </script> -->
+</head>
+<body>
+  <div id="app">
+    <h1>
+      {{arr}}
+    </h1>
+    <button @click='thisClick'>thisClick</button>
+    <hr>
+  </div>
+
+  <script>
+
+    // Vue.use(vueRouter)
+    const vm = new Vue({
+      el: '#app',
+      data: {
+        msg: 'hello world',
+        arr: [1, 5, 10, [20, 30]]
+      },
+      created () {
+        console.log(this)
+        console.log(this.msg)
+      },
+      methods: {
+        // thisClick () {
+        //   console.log(this)
+        // }
+        thisClick: () => {
+          console.log(this)
+        }
+      }
+    });
+  </script>
+</body>
+</html>
