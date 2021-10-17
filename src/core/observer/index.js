@@ -35,6 +35,13 @@ export function toggleObserving (value: boolean) {
  * collect dependencies and dispatch updates.
  */
 
+/* 
+  简单解释一下下面这段代码
+  1. 定义Observer类，该类的作用是递归将对象value的属性转换成可以监听的对象,
+     给value设置设置__ob__属性，属性值为使用Observer类创建的实例。__ob__起到标识作用，
+     防止重复进行响应式处理。具体内容打开对应源码文件，看一下walk调用，不再赘述。
+*/
+
 // Observer类的作用是通过递归将一个对象上的属性转化成可以监听的对象
 export class Observer {
   value: any;
@@ -46,10 +53,7 @@ export class Observer {
     // 创建发布者dep
     this.dep = new Dep()
     this.vmCount = 0
-    // 要为对象value配置__ob__属性，属性值为Observer对象实例。
-    // 设置了__ob__属性的对象已经进行了响应式的处理，__ob__起到标识作用
     def(value, '__ob__', this)
-    // value值为对象
     if (Array.isArray(value)) {
       // 浏览器是否部署了__proto__属性
       if (hasProto) {
@@ -64,11 +68,6 @@ export class Observer {
     }
   }
 
-  /**
-   * Walk through all properties and convert them into
-   * getter/setters. This method should only be called when
-   * value type is Object.
-   */
   // 为对象上所有属性设置getter/setter
   walk (obj: Object) {
     const keys = Object.keys(obj)
@@ -77,9 +76,6 @@ export class Observer {
     }
   }
 
-  /**
-   * Observe a list of Array items.
-   */
   // 为数组元素设置响应式
   observeArray (items: Array<any>) {
     for (let i = 0, l = items.length; i < l; i++) {
@@ -87,8 +83,6 @@ export class Observer {
     }
   }
 }
-
-// helpers
 
 /**
  * Augment a target Object or Array by intercepting
@@ -112,12 +106,9 @@ function copyAugment (target: Object, src: Object, keys: Array<string>) {
   }
 }
 
-/**
- * Attempt to create an observer instance for a value,
- * returns the new observer if successfully observed,
- * or the existing observer if the value already has one.
- */
-// 响应式处理
+/* 
+  observe方法的作用是调用Observer类，创建一个响应式对象并且返回
+*/
 export function observe (value: any, asRootData: ?boolean): Observer | void {
   // 不是对象，不需要响应式处理
   if (!isObject(value) || value instanceof VNode) {
@@ -144,10 +135,9 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
   return ob
 }
 
-/**
- * Define a reactive property on an Object.
- */
-// 定义对象上的响应式属性
+/* 
+  1. 定义对象上的响应式属性
+*/
 export function defineReactive (
   obj: Object,
   key: string,
@@ -164,8 +154,7 @@ export function defineReactive (
     return
   }
 
-  // cater for pre-defined getter/setters
-  // 用户可能自定义了get和set
+  // 用户自定义get和set
   const getter = property && property.get
   const setter = property && property.set
   // 没有第三个参数，就使用obj[key]获取val
@@ -179,7 +168,6 @@ export function defineReactive (
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
-    // 定义get
     get: function reactiveGetter () {
       // 用户定义的getter
       const value = getter ? getter.call(obj) : val
