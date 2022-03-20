@@ -25,6 +25,7 @@ const ALWAYS_NORMALIZE = 2
 
 // wrapper function for providing a more flexible interface
 // without getting yelled at by flow
+// 创建VNode
 export function createElement (
   context: Component,
   tag: any,
@@ -44,6 +45,7 @@ export function createElement (
   return _createElement(context, tag, data, children, normalizationType)
 }
 
+// 创建VNode的真正方法
 export function _createElement (
   context: Component,
   tag?: string | Class<Component> | Function | Object,
