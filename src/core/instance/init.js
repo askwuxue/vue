@@ -37,7 +37,7 @@ export function initMixin (Vue: Class<Component>) {
       // 子组件：性能优化，减少原型链的动态查找，提高执行效率
       initInternalComponent(vm, options)
     } else {
-      // 根组件：选项合并，将全局配置合并到根组件的局部实例上
+      // 根组件：选项合并，将全局配置合并到根组件的实例上
       // 1. Vue.component做了选项合并，合并Vue内置的全局组件和用户自己注册的全局组件，最终都会放到components选项上
       // 2. components局部注册，执行编译器生成的render函数时进行选合并，合并全局配置项到组件局部配置项上
       vm.$options = mergeOptions(

@@ -70,7 +70,7 @@ function createKeyToOldIdx (children, beginIdx, endIdx) {
 export function createPatchFunction (backend) {
   let i, j
   const cbs = {}
-
+  // nodeOps 封装了一系列 DOM 操作的方法，modules 定义了一些模块的钩子函数的实现
   const { modules, nodeOps } = backend
 
   for (i = 0; i < hooks.length; ++i) {
@@ -122,6 +122,7 @@ export function createPatchFunction (backend) {
 
   let creatingElmInVPre = 0
 
+  // 过虚拟节点创建真实的 DOM 并插入到它的父节点中
   function createElm (
     vnode,
     insertedVnodeQueue,
@@ -190,6 +191,7 @@ export function createPatchFunction (backend) {
       } else {
         createChildren(vnode, children, insertedVnodeQueue)
         if (isDef(data)) {
+          // 执行所有的 create 的钩子并把 vnode push 到 insertedVnodeQueue 中。
           invokeCreateHooks(vnode, insertedVnodeQueue)
         }
         insert(parentElm, vnode.elm, refElm)
@@ -697,6 +699,10 @@ export function createPatchFunction (backend) {
     }
   }
 
+  // oldVnode 表示旧的 VNode 节点，它也可以不存在或者是一个 DOM 对象；
+  // vnode 表示执行 _render 后返回的 VNode 的节点；
+  // hydrating 表示是否是服务端渲染；
+  // removeOnly 是给 transition-group 用的
   return function patch (oldVnode, vnode, hydrating, removeOnly) {
     if (isUndef(vnode)) {
       if (isDef(oldVnode)) invokeDestroyHook(oldVnode)
