@@ -41,7 +41,9 @@ export function initMixin (Vue: Class<Component>) {
       // 1. Vue.component做了选项合并，合并Vue内置的全局组件和用户自己注册的全局组件，最终都会放到components选项上
       // 2. components局部注册，执行编译器生成的render函数时进行选合并，合并全局配置项到组件局部配置项上
       vm.$options = mergeOptions(
+        // Vue.options
         resolveConstructorOptions(vm.constructor),
+        // 调用Vue构造函数传递的options
         options || {},
         vm
       )
