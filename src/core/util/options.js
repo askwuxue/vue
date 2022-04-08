@@ -397,10 +397,12 @@ export function mergeOptions (
     checkComponents(child)
   }
 
+  // Vue 构造函数本身就拥有这个属性，其实通过 Vue.extend 创造出来的子类也是拥有这个属性的。
+  // 所以这就允许我们在进行选项合并的时候，去合并一个 Vue 实例构造者的选项了。
   if (typeof child === 'function') {
     child = child.options
   }
-  // 注入props和directives
+  // 规范化props和directives
   normalizeProps(child, vm)
   normalizeInject(child, vm)
   normalizeDirectives(child)
