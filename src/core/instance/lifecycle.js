@@ -34,15 +34,26 @@ export function initLifecycle (vm: Component) {
   const options = vm.$options
 
   // locate first non-abstract parent
+  // 定义 parent，它引用当前实例的父实例
   let parent = options.parent
   if (parent && !options.abstract) {
+    // 使用 while 循环查找第一个非抽象的父组件,
+    //  实际上 Vue 内部有一些选项是没有暴露给我们的，就比如这里的 abstract，通过设置这个选项为 true，
+    // 可以指定该组件是抽象的，那么通过该组件创建的实例也都是抽象的
+    // 抽象的组件有什么特点呢？一个最显著的特点就是它们一般不渲染真实DOM，这么说大家可能不理解，
+    // 我举个例子大家就明白了，我们知道 Vue 内置了一些全局组件比如 keep-alive 或者 transition，
+    // 我们知道这两个组件它是不会渲染DOM至页面的,但他们依然给我提供了很有用的功能.
     while (parent.$options.abstract && parent.$parent) {
       parent = parent.$parent
     }
+    // 经过上面的 while 循环后，parent 应该是一个非抽象的组件，将它作为当前实例的父级，
+    // 所以将当前实例 vm 添加到父级的 $children 属性里
     parent.$children.push(vm)
   }
 
+  // 设置当前实例的 $parent 属性，指向父级
   vm.$parent = parent
+  // 设置 $root 属性，有父级就是用父级的 $root，否则 $root 指向自身
   vm.$root = parent ? parent.$root : vm
 
   vm.$children = []

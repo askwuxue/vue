@@ -49,6 +49,7 @@ export function proxy (target: Object, sourceKey: string, key: string) {
 
 // 响应式处理
 export function initState (vm: Component) {
+  // 存储所有该组件实例的 watcher 对象
   vm._watchers = []
   const opts = vm.$options
   // 处理 props 对象，为 props 对象的每个属性设置响应式，并将其代理到 vm 实例上

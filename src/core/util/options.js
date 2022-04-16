@@ -83,6 +83,7 @@ export function mergeDataOrFn (
 ): ?Function {
   if (!vm) {
     // in a Vue.extend merge, both should be functions
+    // 选项是在调用 Vue.extend 函数时进行合并处理的，此时父子 data 选项都应该是函数。
     if (!childVal) {
       return parentVal
     }
@@ -222,9 +223,12 @@ strats.watch = function (
   }
   if (!parentVal) return childVal
   const ret = {}
+  // 将 parentVal 的属性混合到 ret 中，后面处理的都将是 ret 对象，最后返回的也是 ret 对象
   extend(ret, parentVal)
   for (const key in childVal) {
+    // 由于遍历的是 childVal，所以 key 是子选项的 key，父选项中未必能获取到值，所以 parent 未必有值
     let parent = ret[key]
+    // child 是肯定有值的，因为遍历的就是 childVal 本身
     const child = childVal[key]
     if (parent && !Array.isArray(parent)) {
       parent = [parent]
@@ -248,10 +252,13 @@ strats.computed = function (
   vm?: Component,
   key: string
 ): ?Object {
+  // 如果存在 childVal，那么在非生产环境下要检查 childVal 的类型
   if (childVal && process.env.NODE_ENV !== 'production') {
     assertObjectType(key, childVal, vm)
   }
   if (!parentVal) return childVal
+  // 如果 parentVal 存在，则创建 ret 对象，然后分别将 parentVal 和 childVal 的属性混合到 ret 中，
+  // 注意：由于 childVal 将覆盖 parentVal 的同名属性
   const ret = Object.create(null)
   extend(ret, parentVal)
   if (childVal) extend(ret, childVal)
@@ -425,10 +432,12 @@ export function mergeOptions (
 
   const options = {}
   let key
+  // 分别将parent和child中的key merge到options中
   for (key in parent) {
     mergeField(key)
   }
   for (key in child) {
+    // 避免在parent重复调用mergeField
     if (!hasOwn(parent, key)) {
       mergeField(key)
     }
