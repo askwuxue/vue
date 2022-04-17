@@ -67,8 +67,8 @@ export class Observer {
        * 为什么要判断，是因为一会儿要通过 __proto__ 操作数据的原型链
        * 覆盖数组默认的七个原型方法，以实现数组响应式
        */
+      // 有 __proto__
       if (hasProto) {
-         // 有 __proto__
         protoAugment(value, arrayMethods)
       } else {
         copyAugment(value, arrayMethods, arrayKeys)
@@ -139,7 +139,8 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
     return
   }
   let ob: Observer | void
-  //  // 如果 value 对象上存在 __ob__ 属性，则表示已经做过观察了，直接返回 __ob__ 属性
+  // 当一个数据对象被观测之后将会在该对象上定义 __ob__ 属性
+  // 如果 value 对象上存在 __ob__ 属性，则表示已经做过观察了，直接返回 __ob__ 属性
   if (hasOwn(value, '__ob__') && value.__ob__ instanceof Observer) {
     ob = value.__ob__
   } else if (
@@ -164,6 +165,7 @@ export function observe (value: any, asRootData: ?boolean): Observer | void {
  *   1、在第一次读取时收集依赖，比如执行 render 函数生成虚拟 DOM 时会有读取操作
  *   2、在更新时设置新值并通知依赖更新
  */
+// defineReactive 函数的核心就是 将数据对象的数据属性转换为访问器属性
 export function defineReactive (
   obj: Object,
   key: string,
@@ -174,7 +176,7 @@ export function defineReactive (
   // 实例化 dep，一个 key 一个 dep
   const dep = new Dep()
 
-   // 获取 obj[key] 的属性描述符，发现它是不可配置对象的话直接 return
+  // 获取 obj[key] 的属性描述符，发现它是不可配置对象的话直接 return
   const property = Object.getOwnPropertyDescriptor(obj, key)
   if (property && property.configurable === false) {
     return

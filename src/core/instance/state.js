@@ -141,6 +141,9 @@ function initProps (vm: Component, propsOptions: Object) {
  */
 function initData (vm: Component) {
   let data = vm.$options.data
+  // 因为 beforeCreate 生命周期钩子函数是在 mergeOptions 函数之后 initData 之前被调用的，
+  // 如果在 beforeCreate 生命周期钩子函数中修改了 vm.$options.data 的值，
+  // 那么在 initData 函数中对于 vm.$options.data 类型的判断就是必要的了。
   data = vm._data = typeof data === 'function'
     ? getData(data, vm)
     : data || {}
@@ -187,7 +190,6 @@ function initData (vm: Component) {
 // 获取组件中的data数据，组件中的data是函数，该函数的返回值为组件的data数据
 export function getData (data: Function, vm: Component): any {
   // #7573 disable dep collection when invoking data getters
-  // TODO 为什么禁用依赖收集，多此一举呢
   pushTarget()
   try {
     return data.call(vm, vm)
