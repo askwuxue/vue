@@ -165,6 +165,7 @@ export function mountComponent (
   vm.$el = el
   // vue实例上不存在render函数
   if (!vm.$options.render) {
+    // 此时渲染函数的作用将仅仅渲染一个空的 vnode 对象
     vm.$options.render = createEmptyVNode
     if (process.env.NODE_ENV !== 'production') {
       /* istanbul ignore if */
@@ -208,9 +209,11 @@ export function mountComponent (
       measure(`vue ${name} patch`, startTag, endTag)
     }
   } else {
-    // 组件更新定义
+    // 把渲染函数生成的虚拟DOM渲染成真正的DOM
     updateComponent = () => {
       // 最终通过调用render函数，实现组件更新
+      // vm._update 函数的作用是把 vm._render 函数生成的虚拟节点渲染成真正的 DOM
+      // vm._render 函数的作用是调用 vm.$options.render 函数并返回生成的虚拟节点(vnode)
       vm._update(vm._render(), hydrating)
     }
   }
